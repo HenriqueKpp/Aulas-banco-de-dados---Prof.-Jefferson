@@ -1,0 +1,55 @@
+CREATE DATABASE if not exists ControleBiblioteca;
+use ControleBiblioteca;
+
+CREATE TABLE Cliente(
+ID int primary key,
+CPF varchar (12) not null,
+Nome varchar (255),
+DataNasc DATE,
+Saldo float default (0)         
+);
+
+CREATE TABLE Livro(
+ISBN varchar(13) primary key,
+titulo varchar(255),
+ano int,
+IDCliente int,
+constraint ID_Cliente
+foreign key (IDCliente) references Cliente (ID),
+IDAutor int,
+constraint ID_Autor
+foreign key (IDAutor) references Autor (ID)
+);  
+
+
+CREATE TABLE Autor(
+ID int primary key,
+nomeAutor varchar(255)
+);
+
+CREATE TABLE Emprestimo(
+id int primary key auto_increment,
+data_emprestimo timestamp not null default current_timestamp,
+data_devolucao timestamp,
+id_cliente int not null,
+isbn_livro varchar(13) not null,
+foreign key (id_cliente) references Cliente (ID),
+foreign key (isbn_livro) references Livro (ISBN)
+);
+
+DROP DATABASE CONTROLEBIBLIOTECA;
+
+insert into Emprestimo(id,data_devolucao,id_cliente,isbn_livro)
+values(1,'2025-07-22',4,1);
+
+insert into Autor(ID, nomeAutor)
+values(1040,'Ferdinando');
+
+insert into Livro(ISBN, titulo, ano, IDAutor,IDCliente)
+values(1,'O Pequeno Principe',"2020",'1040','4');
+
+insert into Cliente(ID,CPF,Nome,DataNasc,Saldo)
+values('4','07010250190','Henrique Dantas','2006-04-01','1000');
+
+ALTER TABLE Livro 
+ADD IDCliente int
